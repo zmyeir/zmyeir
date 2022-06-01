@@ -1,0 +1,243 @@
+@charset "utf-8";
+
+@import url("https://fonts.googleapis.com/css?family=Fredoka+One|Open+Sans:300");
+
+html,body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	font-family: PingFang SC,RobotoDraft,Roboto,Helvetica Neue,Helvetica,Arial,STHeiti,华文黑体,Microsoft YaHei,微软雅黑,sans-serif;
+	color: #333333;
+	background: rgba(249, 249, 249, 0.66);
+	overflow-x:hidden; 
+	overflow-y:hidden;
+}
+
+.avatar {
+	border-radius: 50%;
+	width: 150px;
+}
+
+li {
+	float: left;
+	list-style-type: none;
+	padding: 15px;
+	margin-top: 20px;
+}
+
+::selection {
+	background: rgba(0,149,255,.1);
+	color: #6F8EC5;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+.bio {
+	color: rgba(51,51,51,0.54);
+	margin-top: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.content-container {
+	position: relative;
+	text-align: center;
+}
+
+.footer {
+	position: absolute;
+	bottom: 8px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 12px;
+	opacity: .4;
+	font-weight: 100;
+}
+
+.text {
+	font-family: "Fredoka One", cursive;
+	font-size: 5em;
+	text-transform: uppercase;
+	letter-spacing: -12px;
+	text-align: center;
+}
+
+.text .letter {
+	position: relative;
+	display: inline-block;
+	-webkit-transition: all .4s;
+	transition: all .4s;
+}
+
+.text .letter .character {
+	opacity: 0.65;
+	-webkit-transition: color .4s;
+	transition: color .4s;
+	cursor: pointer;
+}
+
+.text .letter span {
+	position: absolute;
+	bottom: .8rem;
+	left: .4rem;
+	display: block;
+	width: 100%;
+	height: 15px;
+}
+
+.text .letter span::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0;
+	height: 0;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.text .letter:hover .character {
+	color: #fff !important;
+}
+
+.text.part1 .letter:nth-child(1) .character {
+	color: #f44336;
+	-webkit-animation: wave 1.6s linear infinite;
+	animation: wave 1.6s linear infinite;
+	-webkit-animation-delay: 0.33333s;
+	animation-delay: 0.33333s;
+}
+
+.text.part1 .letter:nth-child(1) span::before {
+	-webkit-animation: shadow 1.6s linear infinite;
+	animation: shadow 1.6s linear infinite;
+	-webkit-animation-delay: 0.33333s;
+	animation-delay: 0.33333s;
+}
+
+.text.part1 .letter:nth-child(2) .character {
+	color: #9C27B0;
+	-webkit-animation: wave 1.6s linear infinite;
+	animation: wave 1.6s linear infinite;
+	-webkit-animation-delay: 0.66667s;
+	animation-delay: 0.66667s;
+}
+
+.text.part1 .letter:nth-child(2) span::before {
+	-webkit-animation: shadow 1.6s linear infinite;
+	animation: shadow 1.6s linear infinite;
+	-webkit-animation-delay: 0.66667s;
+	animation-delay: 0.66667s;
+}
+
+@-webkit-keyframes wave {
+	0% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	50% {
+		-webkit-transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+
+	100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+}
+
+@keyframes wave {
+	0% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	50% {
+		-webkit-transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+
+	100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+}
+
+@-webkit-keyframes shadow {
+	0% {
+		width: 0;
+		height: 0;
+	}
+
+	50% {
+		width: 100%;
+		height: 100%;
+	}
+
+	100% {
+		width: 0;
+		height: 0;
+	}
+}
+
+@keyframes shadow {
+	0% {
+		width: 0;
+		height: 0;
+	}
+
+	50% {
+		width: 100%;
+		height: 100%;
+	}
+
+	100% {
+		width: 0;
+		height: 0;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.text {
+		font-size: 7em;
+	}
+
+	.text .letter span {
+		bottom: .5rem;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.text {
+		font-size: 6em;
+	}
+
+	.text .letter span {
+		bottom: 0;
+	}
+}
+
+/*background*/
+:root {
+	--grow-time: 5s;
+	--fade-time: 3s;
+}
