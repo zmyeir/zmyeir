@@ -1,0 +1,19 @@
+{
+  "github": {
+      "silent": true
+  },
+  "rewrites": [
+      {
+          "source": "/gpg",
+          "destination": "/api/Pubkey"
+      },
+      {
+          "source": "/ssh",
+          "destination": "/api/Pubkey"
+      },
+      {
+          "source": "/(.*)",
+          "destination": "/index.html"
+      }
+  ]
+}
