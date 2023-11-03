@@ -2,7 +2,7 @@ const app = require('express')();
 
 app.get('/ssh', (req, res) => {
   const ssh = `
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKAh226NoFusD118jNIwdSl1HN2g044/0WtyKJ57jV88
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOr+W10B5UzTScG6Jl8l4oQnQioRXmdyZcIESgu94ccK
   `;
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
