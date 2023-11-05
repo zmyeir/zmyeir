@@ -2,7 +2,8 @@ const app = require('express')();
 
 app.get('/ssh', (req, res) => {
   const ssh = `
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOr+W10B5UzTScG6Jl8l4oQnQioRXmdyZcIESgu94ccK
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOr+W10B5UzTScG6Jl8l4oQnQioRXmdyZcIESgu94ccK
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVLgazbNRAOhZqg7Wu7Gl8lU8dYQpTqEX8vP6qs7xwlQEkdwWdf44f71MpY29CCP+7l9F0FOUBxmltcojW04CDIDpsXphE+HNtPMlLjkfvQrTu305GGS8hiiSgMqjt6XrmrIcw5y44R2k/Fj9Fv54w2uTupFtTXsljr0/GQUsgElW2tUNLsVwkNKr410FC7l5bvVZfp7OjapVjRib6ESLjNyy1pwp6z0v40vYLP4Mai+eBWy6NONUj0kfruQsZlwaoVvOxEcXEPQT6n/pOSoXXQ8ErAIt1/NSJj3OL1dNJiegUFpHZBW8BtE9EstQRCrKF2LZuAmsKIEZqky5Meg4s1zWKnZBWvPgXzvex9qXegkEyikDrmtZbAuWxEzVjhL/t8VVCHCOUGmeohzB+pY7hTIRxxt4YKFZxuCqsGSpys7grxJbfqbITTmBgP7gJ8DD5C7NY4jpjclfnvREQmY1yRHepPMC/F4QJD0FcDhJ7Ab34XrxT4462ZnXsrUDTDDqFNkZiPKlefN4TgO1dB7Gf2HKrYMEM3EFkpB+DkCcIMInqvzuQ19RgTpAJaLi7QV4BEr7dKf2qqnyb/93LgFl/fIu01+e5cRqAGPM6VwNRvIitnqTV0s8BK3fNxCIKGR/SLeym709O9pSZ98ulTLYelqLijCXD/d5sYjUZbrsQHw==
   `;
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
