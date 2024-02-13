@@ -8,6 +8,12 @@
 
 [GITHUB](https://github.com/zmyeir)
 
+----------
+
+[![Profile visitcount](https://visitcount.itsvg.in/api?id=zmyeir&label=Profile%20Views&color=1&icon=5&pretty=false)](https://visitcount.itsvg.in)
+
+----------
+
 ### 联系信息 / Contact
 
 KeyBase: [KeyBase@Zmyeir](https://keybase.io/zmyeir)
