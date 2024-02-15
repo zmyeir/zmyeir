@@ -48,6 +48,165 @@ sudo apt install arch-install-scripts qemu-user-static  android-platform-system-
 
 config：[ postmarketOS/pmaports](https://gitlab.com/postmarketOS/pmaports/-/raw/master/device/community/linux-postmarketos-qcom-msm8953/config-postmarketos-qcom-msm8953.aarch64)
 
+如果使用 Archlinux 也可以用 `makepkg` 构建，PKGBUILD 如下：
+
+```shell
+# AArch64 MSM8953
+# Maintainer: Zmyeir <x@zrlab.org>
+
+buildarch=8
+
+pkgbase=linux-aarch64
+pkgver=6.7.2
+pkgrel=1
+_kernelname=${pkgbase#linux}
+_desc="AArch64 qcom msm8953"
+_srcdir=linux-${pkgver}-r0
+arch=('aarch64')
+url="https://github.com/msm8953-mainline/linux"
+license=('GPL2')
+makedepends=('bc' 'dtc' 'kmod' 'inetutils' 'git' 'tar' 'xz' 'xmlto')
+options=('!strip')
+source=("https://github.com/msm8953-mainline/linux/archive/refs/tags/v${pkgver}-r0.tar.gz"
+        'config'
+)
+sha256sums=('SKIP'
+            'SKIP')
+
+prepare() {
+  cd $_srcdir
+
+  echo "Setting version..."
+  #scripts/setlocalversion --save-scmversion
+  echo "-$pkgrel" > localversion.10-pkgrel
+  echo "${pkgbase#linux}" > localversion.20-pkgname
+  cat "${srcdir}/config" > ./.config
+}
+
+build() {
+  cd ${_srcdir}
+
+  # get kernel version
+  make prepare
+  make -s kernelrelease > version
+
+  # build!
+  unset LDFLAGS
+  make ${MAKEFLAGS} Image Image.gz modules
+  # Generate device tree blobs with symbols to support applying device tree overlays in U-Boot
+  make ${MAKEFLAGS} DTC_FLAGS="-@" dtbs
+}
+
+_package() {
+  pkgdesc="The Linux Kernel and modules - ${_desc}"
+  depends=('coreutils' 'initramfs' 'kmod' 'mkinitcpio>=0.7')
+  optdepends=('wireless-regdb: to set the correct wireless channels of your country'
+              'linux-firmware: firmware images needed for some devices')
+  provides=("linux=${pkgver}" "WIREGUARD-MODULE")
+  conflicts=('linux')
+
+  cd $_srcdir
+  local kernver="$(<version)"
+  local modulesdir="$pkgdir/usr/lib/modules/$kernver"
+
+  echo "Installing boot image and dtbs..."
+  install -Dm644 arch/arm64/boot/Image{,.gz} -t "${pkgdir}/boot"
+  install -Dt "$modulesdir/dtbs" arch/arm64/boot/dts/qcom/msm8953*.dtb
+ 
+  # Used by mkinitcpio to name the kernel
+  echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
+
+  echo "Installing modules..."
+  make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 modules_install
+
+  # remove build and source links
+  rm "$modulesdir"/{source,build} || true
+
+}
+
+_package-headers() {
+  pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
+  depends=(pahole)
+
+  cd $_srcdir
+  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
+
+  echo "Installing build files..."
+  install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
+    localversion.* version vmlinux
+  install -Dt "$builddir/kernel" -m644 kernel/Makefile
+  install -Dt "$builddir/arch/arm64" -m644 arch/arm64/Makefile
+  cp -t "$builddir" -a scripts
+
+  echo "Installing headers..."
+  cp -t "$builddir" -a include
+  cp -t "$builddir/arch/arm64" -a arch/arm64/include
+  install -Dt "$builddir/arch/arm64/kernel" -m644 arch/arm64/kernel/asm-offsets.s
+  mkdir -p "$builddir/arch/arm"
+  cp -t "$builddir/arch/arm" -a arch/arm/include
+
+  install -Dt "$builddir/drivers/md" -m644 drivers/md/*.h
+  install -Dt "$builddir/net/mac80211" -m644 net/mac80211/*.h
+
+  # https://bugs.archlinux.org/task/13146
+  install -Dt "$builddir/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
+
+  # https://bugs.archlinux.org/task/20402
+  install -Dt "$builddir/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
+  install -Dt "$builddir/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
+  install -Dt "$builddir/drivers/media/tuners" -m644 drivers/media/tuners/*.h
+
+  # https://bugs.archlinux.org/task/71392
+  install -Dt "$builddir/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
+
+  echo "Installing KConfig files..."
+  find . -name 'Kconfig*' -exec install -Dm644 {} "$builddir/{}" \;
+
+  echo "Removing unneeded architectures..."
+  local arch
+  for arch in "$builddir"/arch/*/; do
+    [[ $arch = */arm64/ || $arch == */arm/ ]] && continue
+    echo "Removing $(basename "$arch")"
+    rm -r "$arch"
+  done
+
+  echo "Removing documentation..."
+  rm -r "$builddir/Documentation"
+
+  echo "Removing broken symlinks..."
+  find -L "$builddir" -type l -printf 'Removing %P\n' -delete
+
+  echo "Removing loose objects..."
+  find "$builddir" -type f -name '*.o' -printf 'Removing %P\n' -delete
+
+  echo "Stripping build tools..."
+  local file
+  while read -rd '' file; do
+    case "$(file -bi "$file")" in
+      application/x-sharedlib\;*)      # Libraries (.so)
+        strip -v $STRIP_SHARED "$file" ;;
+      application/x-archive\;*)        # Libraries (.a)
+        strip -v $STRIP_STATIC "$file" ;;
+      application/x-executable\;*)     # Binaries
+        strip -v $STRIP_BINARIES "$file" ;;
+      application/x-pie-executable\;*) # Relocatable binaries
+        strip -v $STRIP_SHARED "$file" ;;
+    esac
+  done < <(find "$builddir" -type f -perm -u+x ! -name vmlinux -print0)
+
+  echo "Adding symlink..."
+  mkdir -p "$pkgdir/usr/src"
+  ln -sr "$builddir" "$pkgdir/usr/src/$pkgbase"
+}
+
+pkgname=("${pkgbase}" "${pkgbase}-headers")
+for _p in ${pkgname[@]}; do
+  eval "package_${_p}() {
+    _package${_p#${pkgbase}}
+  }"
+done
+```
+
 ### 源码拉取
 
 拉取 v6.7.2-r0 分支（本文发布时最新签出）
