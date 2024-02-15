@@ -1,0 +1,3 @@
+console.log("%c ZRLab %c https://blog.zrlab.org", "color:#fff;background:linear-gradient(to right, #0f2027, #203a43);padding:5px 0;border-radius: 3px 0 0 3px;", "color:#fff;background:linear-gradient(to right, #203a43, #2c5364);padding:5px 10px 5px 0px;border-radius: 0 3px 3px 0;");
+console.log("%c Powered by %c HUGO  ", "padding: 2px 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060;", "padding: 2px 1px; border-radius: 0 3px 3px 0; color: #fff; background: #b5c4b1; ");
+console.log("%c Theme by %c MemE ", "padding: 2px 1px; border-radius: 3px 0 0 3px; color: #fff; background: #606060;", "padding: 2px 1px; border-radius: 0 3px 3px 0; color: #fff; background: #b5c4b1; ");

@@ -1,0 +1,76 @@
+{
+  "friends": [
+    {
+      "id_name": "links",
+      "desc": "小伙伴们",
+      "link_list": [
+        {
+          "name": "杏铃の小本",
+          "intro": "一份分享教程,游戏的礼物✧(≖ ◡ ≖✿)",
+          "link": "https://杏铃.top/",
+          "avatar": "/imgs/avatar/66ccff.png"
+        },
+        {
+          "name": "Dejavu's Blog",
+          "intro": "Not for success, just for growing.",
+          "link": "https://blog.dejavu.moe/",
+          "avatar": "/imgs/avatar/dejavu.png"
+        },
+        {
+          "name": "Rui's Blog",
+          "intro": "有好玩的带上我xD",
+          "link": "https://blog.rui.plus/",
+          "avatar": "/imgs/avatar/rui.png"
+        },
+        {
+          "name": "LamGC",
+          "intro": "Error?",
+          "link": "https://blog.lamgc.moe/",
+          "avatar": "/imgs/avatar/lamgc.png"
+        },
+        {
+          "name": "林祈'Blog",
+          "intro": "梅花香自苦寒来",
+          "link": "https://dnslin.com/",
+          "avatar": "/imgs/avatar/dnslin.png"
+        },
+        {
+          "name": "知命的博客",
+          "intro": "敢点就敢短命",
+          "link": "https://zimk.org/",
+          "avatar": "/imgs/avatar/zimk.png"
+        }
+      ]
+    },
+    {
+      "id_name": "inactive-links",
+      "desc": "有些问题？",
+      "link_list": [
+        {
+          "name": "186526's Blog",
+          "intro": "装萌新的屑186",
+          "link": "https://blog.186526.xyz/",
+          "avatar": "/imgs/avatar/186526.png"
+        },
+        {
+          "name": "Dreamy.WJY",
+          "intro": "一条有着远大理想的咸鱼",
+          "link": "https://wjy.me/",
+          "avatar": "/imgs/avatar/wjy.png"
+        },
+        {
+          "name": "陈YF的博客",
+          "intro": "一个在互联网角落挣扎的小小博客",
+          "link": "https://blog.cyfan.top/",
+          "avatar": "/imgs/avatar/cyfan.png"
+        },
+        {
+          "name": "KUKU",
+          "intro": "KKKKKKK!",
+          "link": "https://kuku.me/",
+          "avatar": "/imgs/avatar/kuku.png"
+        }
+      ]
+    }
+  ]
+}
