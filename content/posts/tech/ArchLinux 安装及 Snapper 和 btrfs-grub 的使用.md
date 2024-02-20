@@ -3,7 +3,7 @@ title = "ArchLinux 安装及 Snapper 和 btrfs-grub 的使用"
 categories = ["tech"]
 tags = ["btrfs", "archlinux", "snapper"]
 date = "2023-05-07T17:33:00+08:00"
-lastmod = "2023-05-07T17:33:00+08:00"
+lastmod = "2024-02-21T00:06:00+08:00"
 #images = "/imgs/sabgia/cover.jpg"
 slug = "sabgia"
 toc = true
@@ -66,53 +66,34 @@ echo 'Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch' > /etc/pacm
 
 我的分区结构如下：
 
-- /dev/nvme0n1p1 `/boot/efi` 1G ，EFI 分区
+- /dev/nvme0n1p1 `/efi` 1G ，EFI 分区
 
-- /dev/nvme0n1p2 `/` 256G，根目录的 `Btrfs` 分区
+- /dev/nvme0n1p2 `/` 1024G，根目录的 `Btrfs` 分区
 
-- /dev/nvme0n1p3 `/home` 512G，家目录 XFS 分区（避免系统歇菜数据回不来）
-
-- /dev/nvme0n1p4 `Swap` 8G，SWAP 用于休眠
+- /dev/nvme0n1p3 `Swap` 8G，SWAP 用于休眠
 
 #### 创建分区
 
 使用 `cfdisk /dev/nvme0n1` 分区 ~~（TUI真好用）~~ (还是gdisk好用)
 
-```shell
-root@archiso ~ # fdisk -l /dev/nvme0n1
-......
-Device              Start        End    Sectors  Size Type
-/dev/nvme0n1p1       2048    2099199    2097152    1G EFI System
-/dev/nvme0n1p2    2099200  538970111  536870912  256G Linux filesystem
-/dev/nvme0n1p3  673187840 1746929663 1073741824  512G Linux filesystem
-/dev/nvme0n1p4 1746929664 1763706879   16777216    8G Linux swap
-......
-```
-
 #### 格式化分区
 
-EFI (/boot/efi) :
+ESP (/efi) :
 
 ```shell
-mkfs.fat -F32 -n EFI /dev/nvme0n1p1
+mkfs.fat -F32 -n XESP /dev/nvme0n1p1
 ```
 
 Btrfs (/) :
 
 ```shell
-mkfs.btrfs -f -L OS /dev/nvme0n1p2
-```
-
-XFS (/home) :
-
-```shell
-mkfs.xfs -f -L HOME /dev/nvme0n1p3
+mkfs.btrfs -f -L XOS /dev/nvme0n1p2
 ```
 
 Swap :
 
 ```shell
-mkswap -L SWAP /dev/nvme0n1p4
+mkswap -L SWAP /dev/nvme0n1p3
 ```
 
 ### 建立 Btrfs 子卷
@@ -124,13 +105,24 @@ mkswap -L SWAP /dev/nvme0n1p4
 此处参考了openSUSE Wiki ：[SDB:BTRFS](https://zh.opensuse.org/SDB:BTRFS#.E9.BB.98.E8.AE.A4.E5.AD.90.E5.8D.B7)
 
 - `@`：对应 `/`
-- `@opt`：对应`/opt`
-- `@root`：对应`/root`
-- `@snapshots`：对应`/.snapshots`
-- `@tmp`：对应`/tmp`
-- `@var`：对应 `/var`
 
-其中 `@tmp，@var` 关闭写时复制
+- `@docker`：对应 `/var/lib/docker`
+
+- `@flatpak`：对应 `/var/lib/flatpak`
+
+- `@home`：对应 `/home`
+
+- `@opt`：对应 `/opt`
+
+- `@snapshots`：对应 `/.snapshots`
+
+- `@var_cache`：对应 `/var/cache`
+
+- `@var_log`：对应 `/var/log`
+
+- `@var_tmp`：对应 `/var/tmp`
+
+其中 `@var_cache，@var_log，@var_tmp` 关闭写时复制
 
 #### 创建子卷
 
@@ -139,61 +131,67 @@ mkswap -L SWAP /dev/nvme0n1p4
 ```shell
 mount -t btrfs -o compress=zstd /dev/nvme0n1p2 /mnt
 ```
+
 >  compress 参数用于开启透明压缩，将会稍稍增加 CPU 工作量，按需开启
 
 创建子卷：
 
 ```shell
 btrfs su cr /mnt/@
+btrfs su cr /mnt/@docker
+btrfs su cr /mnt/@flatpak
+btrfs su cr /mnt/@home
 btrfs su cr /mnt/@opt
-btrfs su cr /mnt/@root
 btrfs su cr /mnt/@snapshots
-btrfs su cr /mnt/@tmp
-btrfs su cr /mnt/@var
+btrfs su cr /mnt/@var_cache
+btrfs su cr /mnt/@var_log
+btrfs su cr /mnt/@var_tmp
 ```
 
  随后便可 `umount /mnt` 来进行下一步配置。
-
+ 
 ### 挂载分区
 
 使用需要的参数来挂载子卷及分区
 
+```shell
+DISK=/dev/disk/by-partlabel
+BTRFS_OPTS=compress=zstd,noatime,ssd,space_cache=v2
+```
+
 子卷：
 
 ```shell
-mount -o subvol=@,defaults,noatime,ssd,discard=async,compress=zstd -m /dev/nvme0n1p2 /mnt
-mount -o subvol=@opt,defaults,noatime,ssd,discard=async,compress=zstd -m /dev/nvme0n1p2 /mnt/opt
-mount -o subvol=@root,defaults,noatime,ssd,discard=async,compress=zstd -m /dev/nvme0n1p2 /mnt/root
-mount -o subvol=@tmp,defaults,noatime,ssd,discard=async,compress=zstd -m /dev/nvme0n1p2 /mnt/tmp
-mount -o subvol=@var,defaults,noatime,ssd,discard=async,compress=zstd -m /dev/nvme0n1p2 /mnt/var
-```
-
-HOME：
-
-```shell
-mount -m /dev/nvme0n1p3 /mnt/home
+mount -o subvol=@,$BTRFS_OPTS -m $DISK/XOS /mnt
+mount -o subvol=@docker,$BTRFS_OPTS -m $DISK/XOS /mnt/var/lib/docker
+mount -o subvol=@flatpak,$BTRFS_OPTS -m $DISK/XOS /mnt/var/lib/flatpak
+mount -o subvol=@home,$BTRFS_OPTS -m $DISK/XOS /mnt/home
+mount -o subvol=@opt,$BTRFS_OPTS -m $DISK/XOS /mnt/opt
+mount -o subvol=@snapshots,$BTRFS_OPTS -m $DISK/XOS /mnt/.snapshots
+mount -o subvol=@var_cache,$BTRFS_OPTS -m $DISK/XOS /mnt/var/cache
+mount -o subvol=@var_log,$BTRFS_OPTS -m $DISK/XOS /mnt/var/log
+mount -o subvol=@var_tmp,$BTRFS_OPTS -m $DISK/XOS /mnt/var/tmp
 ```
 
 EFI 分区：
 
 ```shell
-mount -m /dev/nvme0n1p1 /mnt/boot/efi
+mount -m $DISK/XESP /mnt/efi
 ```
 
  SWAP：
-
+ 
 ```shell
 swapon /dev/nvme0n1p4
 ```
 
-对于 `/tmp` 和 `/var` 目录，使用 `chattr` 命令来设置文件属性以取消 CoW 特性：
+使用 `chattr` 命令来设置文件属性以取消部分文件夹 CoW 特性：
 
 ```shell
-chattr +C /mnt/tmp
-chattr +C /mnt/var
+chattr +C /mnt/var/cache
+chattr +C /mnt/var/log
+chattr +C /mnt/var/tmp
 ```
-
-子卷 `@snapshots`  暂不挂载，将在后续配置快照时使用
 
 ### 安装系统
 
@@ -205,13 +203,12 @@ chattr +C /mnt/var
 pacstrap /mnt \
   base base-devel \
   linux-zen linux-firmware sof-firmware  \
-  btrfs-progs xfsprogs 
+  btrfs-progs 
 ```
 
 kernel 可选 ：linux，linux-lts，linux-zen，linux-rt，linux-hardened 
 
 区别可查看：[Kernel - ArchWiki](https://wiki.archlinux.org/title/Kernel)
-
 个人常用 `linux-zen` + `linux-lts`
 
 #### 安装微码
@@ -240,7 +237,7 @@ sed -i 's/subvolid=.*,//' /mnt/etc/fstab
 #### 进入 chroot
 
 ```arch
-arch-chroot /mnt
+arch-chroot /mnt su -
 ```
 
 #### 基础配置 - 系统
@@ -277,6 +274,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 echo KEYMAP=us >> /etc/vconsole.conf
 ```
+
 > 不建议将 LANG 设置为 zh_CN.UTF-8，在tty环境下cjk 字符无法显示，打patch当我没说（x
 
 #### 基础配置 - 软件
@@ -287,7 +285,7 @@ echo KEYMAP=us >> /etc/vconsole.conf
 pacman -Sy grub efibootmgr \
   linux-zen-headers linux-lts linux-lts-headers \
   networkmanager git subversion sudo ruby \
-	neovim neofetch zsh fd fzf exa bat starship tmux
+	helix neofetch zsh fd fzf exa bat 
 ```
 
 2. 安装桌面环境及常用软件：
@@ -299,13 +297,6 @@ pacman -S plasma-meta sddm plasma-wayland-session xdg-desktop-portal \
   packagekit-qt5 packagekit appstream-qt appstream \
   fcitx5-im fcitx5-material-color fcitx5-rime \
   firefox chromium
-
-cat >> /etc/environment << EOF
-GTK_IM_MODULE=fcitx
-QT_IM_MODULE=fcitx
-XMODIFIERS=@im=fcitx
-SDL_IM_MODULE=fcitx
-EOF
 ```
 
 > 在大部分教程中，桌面环境是系统安装完成并重启之后安装的，但我个人是习惯在 archiso 中配置好大部分内容
@@ -321,7 +312,7 @@ passwd USERNAME
 ```
 
 ```shell
-EDITOR=nvim visudo
+EDITOR=helix visudo
 #找到 ： # %wheel ALL=(ALL) ALL
 #改为：
 %wheel ALL=(ALL) ALL
@@ -329,7 +320,7 @@ EDITOR=nvim visudo
 
 #### 启动配置
 
-1. 由于系统使用了 BTRFS，需要对 `/etc/mkinitcpio.conf` 中的 `MODULES` 稍作修改 ：
+1. ~~由于系统使用了 BTRFS，需要对 `/etc/mkinitcpio.conf` 中的 `MODULES` 稍作修改 ：~~
 
 ```conf
 MODULES=(btrfs)
@@ -344,13 +335,14 @@ mkinitcpio -P
 2. 安装 GRUB：
 
 ```shell
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id='Arch Linux'
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id='Arch Linux'
 ```
 
 3. 修改内核参数：
 
 ```shell
 # 去掉 quiet 参数，调整 loglevel 值为 5 ，加入 nowatchdog 参数
+
 sed -i "s|GRUB_CMDLINE_LINUX_DEFAULT.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=5 nowatchdog\"|" /etc/default/grub
 ```
 
@@ -362,6 +354,7 @@ sed -i "s|GRUB_CMDLINE_LINUX_DEFAULT.*|GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=5 n
 >可能会导致开机出现：error: sparse file not allowed
 
 4. 生成 GRUB 配置文件
+
 ```shell
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
@@ -391,11 +384,8 @@ reboot
 
 ```shell
 sudo pacman -Sy ruby
-
 git clone --depth=1 https://github.com/Mark24Code/rime-auto-deploy.git --branch latest
-
 cd rime-auto-deploy
-
 ./installer.rb
 ```
 
@@ -426,7 +416,6 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ```shell 
 sudo vim /etc/mkinitcpio.conf
-
 ......
 HOOKS=(... udev resume ...)
 ......
@@ -447,7 +436,6 @@ cat >> /etc/pacman.conf << EOF
 [archlinuxcn]
 Server = https://mirrors.bfsu.edu.cn/archlinuxcn/\$arch
 EOF
-
 sudo pacman -Sy archlinuxcn-keyring
 ```
 
@@ -458,7 +446,6 @@ Arch4edu：
 pacman-key --recv-keys 7931B6D628C8D3BA
 pacman-key --finger 7931B6D628C8D3BA
 pacman-key --lsign-key 7931B6D628C8D3BA
-
 #添加源
 cat >> /etc/pacman.conf << EOF
 [arch4edu]
@@ -472,20 +459,6 @@ EOF
 sudo pacman -S paru
 ```
 
-
-#### /tmp 
-
-由于 `/tmp` 是挂载的 `@tmp` 子卷，而非由 `systemd` 管理，这可能导致一些软件出现错误。
-修改配置：
-
-```shell
-cat >> etc/tmpfiles.d/tmp.conf << EOF
-# Cleaning up /tmp directory everytime system boots
-D! /tmp 1777 root root 0
-EOF
-```
-
-
 ## 快照配置
 
 这里选择 snapper + grub-btrfs
@@ -493,6 +466,7 @@ EOF
 ### Snapper
 
 安装：
+
 ```shell
 sudo pacman -S snapper snap-pac
 ```
@@ -513,7 +487,9 @@ mkdir /.snapshots
 ```
 
 前面创建了 `@snapshots` 没有使用，现在是时候挂载了（
+
 使用 `sudo vim /etc/fstab` 修改fstab（找着上面的挂载参数照抄，把子卷换成 `@snapshots` 挂载点为：`/.snapshots`） ~~这一步不好自动化:(~~
+
 修改完成后用  `sudo mount -a` 重新挂载
 
 #### 配置 Snapper 
@@ -538,7 +514,6 @@ TIMELINE_LIMIT_WEEKLY="0"
 TIMELINE_LIMIT_MONTHLY="0"
 TIMELINE_LIMIT_YEARLY="0"
 ......
-
 ```
 
 启用自动快照：
@@ -570,7 +545,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```shell
 sudo pacman -S btrfs-assistant
 ```
-
 
 ## 参考
 
