@@ -1,5 +1,8 @@
 {
     "github": {
         "silent": true
-    }
+    },
+    "rewrites": [
+    { "source": "/.well-known/matrix/server", "destination": "/.well-known/matrix/server.json" }
+    ]
 }
