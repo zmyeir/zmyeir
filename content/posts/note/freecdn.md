@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["web", "cdn"]
 date = "2020-04-16T14:26:00+08:00"
 lastmod = "2020-04-16T14:26:00+08:00"
-#images = "/imgs/freecdn/cover.jpg"
+cover = "/imgs/freecdn/cover.jpg"
 slug = "freecdn"
 +++
 

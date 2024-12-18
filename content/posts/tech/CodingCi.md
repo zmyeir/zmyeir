@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["ci", "git", "hexo"]
 date = "2020-02-20T16:41:00+08:00"
 lastmod = "2020-02-20T16:41:00+08:00"
-#images = "/imgs/codingci/cover.jpg"
+cover = "/imgs/codingci/cover.jpg"
 slug = "codingci"
 toc = true
 +++

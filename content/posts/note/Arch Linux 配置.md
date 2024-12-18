@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["linux", "archlinux"]
 date = "2022-04-28T16:04:00+08:00"
 lastmod = "2023-05-07T17:33:00+08:00"
-#images = "/imgs/archlinux/cover.jpg"
+cover = "/imgs/archlinux/cover.jpg"
 slug = "archlinux"
 +++
 

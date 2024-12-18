@@ -20,3 +20,6 @@ hugo.linux
 /.hugo_build.lock
 
 /scripts/
+
+
+node_modules/

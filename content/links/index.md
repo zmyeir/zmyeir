@@ -1,14 +1,13 @@
 +++
 title = "Links"
 date = "2019-12-21T08:00:00+08:00"
+description = "Links on ZRLab"
 displayCopyright = false
 +++
 <link href="/res/links.css" rel="stylesheet">
 
 这里有一些可爱的小伙伴~
 
-<br>
-<br>
 <div class="friends">
 <ul id="links">稍等片刻，好友马上来！</ul>
 </div>

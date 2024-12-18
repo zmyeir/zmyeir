@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["cli", "heroku"]
 date = "2020-10-17T13:35:00+08:00"
 lastmod = "2020-10-17T13:35:00+08:00"
-#images = "/imgs/herokuclilogin/cover.jpg"
+cover = "/imgs/herokuclilogin/cover.jpg"
 slug = "herokuclilogin"
 +++
 

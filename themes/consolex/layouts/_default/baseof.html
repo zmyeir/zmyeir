@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+    {{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{- partial "opengraph.html" . -}}
+    {{ with .OutputFormats.Get "RSS" }}
+    {{ printf `<link href="%s" rel="%s" type="%s" title="%s" />` .Permalink .Rel .MediaType.Type $.Site.Title | safeHTML }}
+    {{ end }}
+    {{ $styles := slice }}
+    {{ range (slice "css/terminal-0.7.4.min.css" "css/consolex.css") }}
+        {{ $styles = $styles | append (resources.Get .) }}
+    {{ end }}
+    {{ $mergedCSS := $styles | resources.Concat "css/x.css" | resources.Minify | resources.Fingerprint "sha256" }}
+    <link rel="stylesheet" href="{{ $mergedCSS.RelPermalink }}" integrity="{{ $mergedCSS.Data.Integrity }}" crossorigin="anonymous">
+
+    {{ with .Site.Params.fonts.fontLink }}<link rel="stylesheet" href="{{ . }}" media="print" onload="this.media='all'" />{{ end }}
+
+    <link rel="icon" href="{{ .Site.Params.favicon }}">
+    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/maple-mono-cn/dist/MapleMono-CN-Regular/result.css' />
+    {{- partial "header.html" . -}}
+</head>
+<body class="terminal">
+    <div class="container">
+        <div class="terminal-nav">
+            <header class="terminal-logo">
+                <div class="logo terminal-prompt">
+                    {{ $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }}
+                    {{ $.Scratch.Add "path" .Site.BaseURL }}
+                    <a href="{{ .Site.BaseURL }}" class="no-style">Guest@{{ .Site.Title }}</a><span> in /</span>{{ range $index, $element := split $url "/" }}{{ $.Scratch.Add "path" $element }}{{ if ne $element "" }}<a href='{{ $.Scratch.Get "path" | absURL }}'>{{ . }}</a>/{{ $.Scratch.Add "path" "/" }}{{ end }}{{ end }}
+                    <br><span>&gt; ls</span>
+                </div>
+            </header>
+            <nav class="terminal-menu">
+                <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                    {{ range .Site.Params.navlinks }}
+                    <li><a href="{{ absURL .url }}" typeof="ListItem">{{ .name }}</a></li>
+                    {{ end }}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        {{ block "main" . }}
+        {{ end }}
+    </div>
+    {{ partial "footer.html" . }}
+</body>
+</html>

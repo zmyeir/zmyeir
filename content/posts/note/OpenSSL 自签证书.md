@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["web", "ssl"]
 date = "2020-12-20T20:22:00+08:00"
 lastmod = "2020-12-20T20:22:00+08:00"
-#images = "/imgs/openssl-ca/cover.jpg"
+cover = "/imgs/openssl-ca/cover.jpg"
 slug = "openssl-ca"
 +++
 

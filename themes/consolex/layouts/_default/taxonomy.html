@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h1>{{ .Page.Title }}</h1>
+<br/>
+<div>
+    <ul>
+        {{ range (.Paginate .Pages).Pages }}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <span class="date">{{ .Date.Format "2006-01-02" }}</span>
+        </li>
+        {{ end }}
+    </ul>
+</div>
+    <br/>
+<div class="pagination">
+{{ partial "pagination.html" . }}
+</div>
+{{ end }}

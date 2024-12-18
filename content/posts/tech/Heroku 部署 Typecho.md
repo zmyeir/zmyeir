@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["web", "typecho", "heroku", "git"]
 date = "2020-11-27T07:54:00+08:00"
 lastmod = "2020-11-27T07:54:00+08:00"
-#images = "/imgs/typechoonheroku/cover.jpg"
+cover = "/imgs/typechoonheroku/cover.jpg"
 slug = "typechoonheroku"
 toc = true
 +++

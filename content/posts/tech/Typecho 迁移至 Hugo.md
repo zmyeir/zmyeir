@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["web", "typecho", "hugo"]
 date = "2021-09-20T06:04:00+08:00"
 lastmod = "2021-09-20T06:04:00+08:00"
-#images = "/imgs/te2hugo/cover.jpg"
+cover = "/imgs/te2hugo/cover.jpg"
 slug = "te2hugo"
 toc = true
 +++

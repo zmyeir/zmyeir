@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["btrfs", "archlinux"]
 date = "2022-04-18T16:04:00+08:00"
 lastmod = "2024-02-13T13:39:00+08:00"
-#images = "/imgs/arch-btrfs/cover.jpg"
+cover = "/imgs/arch-btrfs/cover.jpg"
 slug = "arch-btrfs"
 toc = true
 +++

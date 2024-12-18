@@ -1,6 +1,7 @@
 +++
 title = "About"
 date = "2019-12-21T08:00:00+08:00"
+description = "About on ZRLab"
 displayCopyright = false
 +++
 
@@ -12,10 +13,6 @@ displayCopyright = false
 
 昵称：暂若
 
-性别：男
-
-爱好：~~♀~~
-
 暂若是一名00后的~~初中生~~/~~高中生~~/打工人，没什么技术，但又想做点什么。整天做着不切实际的梦，却不想付出努力。
 
 > 关于本站
@@ -24,7 +21,7 @@ displayCopyright = false
 
 程序：[HUGO](https://gohugo.io/)
 
-主题: [MemE](https://io-oi.me/hugo-theme-meme/)
+主题: [ConsoleX](https://github.com/mrmierzejewski/hugo-theme-console)
 
 > 一些琐事
 

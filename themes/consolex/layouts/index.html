@@ -1,0 +1,15 @@
+{{ define "main" }}
+    <h1>&gt; printf "%s" $POSTS</h1>
+{{ range first 3 (sort .Site.RegularPages "Date" "desc" "Section" "in" .Site.MainSections) }}
+    {{ if not .Params.private }}
+        <div class="post">
+            <p>
+                <h2><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h2>
+                <div class="date">{{ .PublishDate.Format "2006-01-02" }}</div>
+                <!-- {{ .Summary }} -->
+            </p>
+        </div>
+    {{ end }}
+{{ end }}
+    <div><a href="/posts">more...</a>%</div>
+{{ end }}

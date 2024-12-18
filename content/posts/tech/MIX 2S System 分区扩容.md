@@ -5,7 +5,7 @@ categories = ["tech"]
 tags = ["android"]
 date = "2020-08-09T18:17:00+08:00"
 lastmod = "2020-08-09T18:17:00+08:00"
-#images = "/imgs/mix2skr/cover.jpg"
+cover = "/imgs/mix2skr/cover.jpg"
 slug = "mix2skr"
 toc = true
 +++

@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["btrfs", "archlinux", "snapper"]
 date = "2023-05-07T17:33:00+08:00"
 lastmod = "2024-02-21T00:06:00+08:00"
-#images = "/imgs/sabgia/cover.jpg"
+cover = "/imgs/sabgia/cover.jpg"
 slug = "sabgia"
 toc = true
 +++

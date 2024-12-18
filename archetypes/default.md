@@ -4,5 +4,6 @@ date = "{{ .Date }}"
 lastmod = "{{ .Date }}"
 categories = [""]
 tags = [""]
+images = ""
 slug = ""
 +++

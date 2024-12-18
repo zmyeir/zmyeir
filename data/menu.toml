@@ -1,0 +1,32 @@
+[[entries]]
+title = "posts"
+
+  [entries.post_list]
+  limit = 6
+  show_more = true
+  show_more_text = "See more posts..."
+  show_more_url = "posts"
+
+[[entries]]
+title = "another list"
+
+  [[entries.entries]]
+  title = "with subitems"
+
+  [[entries.entries]]
+  title = "with subsubitems"
+
+  [[entries.entries]]
+  title = "example page"
+  url = "about"
+
+[[entries]]
+title = "PRO TIP"
+entries = [
+   { title = "to edit this menu, edit data/menu.toml file" }
+  ]
+
+
+[[entries]]
+title = "rss"
+url = "index.xml"

@@ -1,0 +1,25 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+<div class="date">{{ .PublishDate.Format "2006-01-02" }}</div>
+<aside>
+    {{ .TableOfContents }}
+</aside>
+{{ .Content }}
+<div class="tags-categories-container">
+    <div class="tags">
+        {{ with .Params.tags }}
+            {{ range . }}
+            <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">#{{ . }}</a>
+            {{ end }}
+        {{ end }}
+    </div>
+    <div class="categories">
+        {{ with .Params.categories }}
+            {{ range . }}
+            <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}">/{{ . }}</a>
+            {{ end }}
+        {{ end }}
+    </div>
+</div>
+{{ partial "third-party/artalk.html" . }}
+{{ end }}

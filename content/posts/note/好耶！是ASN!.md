@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["asn", "bgp"]
 date = "2022-03-16T15:33:00+08:00"
 lastmod = "2022-03-16T15:33:00+08:00"
-#images = "/imgs/asn/cover.jpg"
+cover = "/imgs/asn/cover.jpg"
 slug = "asn"
 +++
 

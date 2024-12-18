@@ -4,7 +4,7 @@ categories = ["note"]
 tags = ["docker", "flyio"]
 date = "2021-03-14T09:42:00+08:00"
 lastmod = "2022-12-01T15:13:00+08:00"
-#images = "/imgs/flyio-bitwarden/cover.jpg"
+cover = "/imgs/flyio-bitwarden/cover.jpg"
 slug = "flyio-bitwarden"
 +++
 

@@ -4,7 +4,7 @@ categories = ["tech"]
 tags = ["gpg", "git"]
 date = "2023-01-20T11:41:00+08:00"
 lastmod = "2023-01-20T11:41:00+08:00"
-#images = "/imgs/ykandgpg/cover.jpg"
+cover = "/imgs/ykandgpg/cover.jpg"
 slug = "ykandgpg"
 toc = true
 +++
