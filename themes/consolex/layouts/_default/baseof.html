@@ -10,17 +10,20 @@
     {{ with .OutputFormats.Get "RSS" }}
     {{ printf `<link href="%s" rel="%s" type="%s" title="%s" />` .Permalink .Rel .MediaType.Type $.Site.Title | safeHTML }}
     {{ end }}
-    {{ $styles := slice }}
-    {{ range (slice "css/terminal-0.7.4.min.css" "css/consolex.css") }}
-        {{ $styles = $styles | append (resources.Get .) }}
-    {{ end }}
-    {{ $mergedCSS := $styles | resources.Concat "css/x.css" | resources.Minify | resources.Fingerprint "sha256" }}
-    <link rel="stylesheet" href="{{ $mergedCSS.RelPermalink }}" integrity="{{ $mergedCSS.Data.Integrity }}" crossorigin="anonymous">
 
-    {{ with .Site.Params.fonts.fontLink }}<link rel="stylesheet" href="{{ . }}" media="print" onload="this.media='all'" />{{ end }}
+    {{ $opts := dict "targetPath" "main.css" "outputStyle" "expanded" "enableSourceMap" (not hugo.IsProduction) }}
+        {{ with resources.Get "css/main.scss" | toCSS $opts }}
+            {{ if hugo.IsProduction }}
+                {{ with . | postCSS | fingerprint | resources.PostProcess }}
+                <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+                {{ end }}
+        {{ else }}
+                <link rel="stylesheet" href="{{ .RelPermalink }}">
+        {{ end }}
+    {{ end }}
+
 
     <link rel="icon" href="{{ .Site.Params.favicon }}">
-    <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/maple-mono-cn/dist/MapleMono-CN-Regular/result.css' />
     {{- partial "header.html" . -}}
 </head>
 <body class="terminal">

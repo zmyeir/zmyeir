@@ -1,0 +1,19 @@
+{
+  "name": "blog_with_hugo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "cat themes/consolex/assets/css/terminal-0.7.5.css themes/consolex/assets/css/consolex.css | npx postcss -o public/css/main.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cssnano": "^7.0.6",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "postcss-uncss": "^0.17.0",
+    "uncss": "^0.17.3"
+  }
+}
