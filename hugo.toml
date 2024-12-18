@@ -2,7 +2,7 @@
 baseURL = "https://blog.zrlab.org/"
 title = "ZRLab"
 
-copyright = '© 2019 - 2023 ZRLAB.ORG. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).'
+copyright = '© 2019 - 2024 ZRLAB.ORG. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).'
 
 languageCode = "zh-Hans"
 hasCJKLanguage = true
