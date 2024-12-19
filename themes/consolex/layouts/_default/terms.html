@@ -3,14 +3,14 @@
 <br/>
 {{ .Content }}
 <div>
-    <ul>
-        {{ range .Data.Terms.ByCount }}
-        <li>
-            <a href="{{ .Page.RelPermalink }}" style="font-size: {{ add 0.8 (mul 0.1 (len .Pages)) }}em">
-            {{ .Page.Title }} ({{ .Count }})
-            </a>
-        </li>
-        {{ end }}
-    </ul>
+  <ul>
+    {{ range .Data.Terms.ByCount }}
+    <li>
+      <a href="{{ .Page.RelPermalink }}" style="font-size: {{ add 0.8 (mul 0.1 (len .Pages)) }}em">
+      {{ .Page.Title }} ({{ .Count }})
+      </a>
+    </li>
+    {{ end }}
+  </ul>
 </div>
 {{ end }}

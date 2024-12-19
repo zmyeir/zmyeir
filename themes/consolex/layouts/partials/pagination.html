@@ -4,48 +4,48 @@
 {{ $currentPage := $pag.PageNumber }}
 {{ if gt $totalPages 1 }}
 <nav class="pagination" aria-label="Page navigation">
-    <div>
-        {{ if $pag.HasPrev }}
-        <a href="{{ $pag.Prev.URL }}" aria-label="Previous page"><==</a>
-        {{ else }}
-        <span aria-disabled="true"><==</span>
-        {{ end }}
-    </div>
-    <div>
-        {{ if gt $currentPage (add $adjacentPages 2) }}
-        <a href="{{ $pag.First.URL }}">1</a>
-        {{ end }}
-        {{ if gt $currentPage (add $adjacentPages 2) }}
-        <span>&hellip;</span>
-        {{ end }}
-        {{ $start := sub $currentPage $adjacentPages }}
-        {{ $end := add $currentPage $adjacentPages }}
-        {{ if lt $start 1 }}
-            {{ $start = 1 }}
-        {{ end }}
-        {{ if gt $end $totalPages }}
-            {{ $end = $totalPages }}
-        {{ end }}
-        {{ range seq $start $end }}
-            {{ if eq . $currentPage }}
-            <span aria-current="page">{{ . }}</span>
-            {{ else }}
-            <a href="{{ (index $pag.Pagers (sub . 1)).URL }}">{{ . }}</a>
-            {{ end }}
-        {{ end }}
-        {{ if lt $currentPage (sub $totalPages (add $adjacentPages 1)) }}
-        <span>&hellip;</span>
-        {{ end }}
-        {{ if lt $currentPage (sub $totalPages (add $adjacentPages 1)) }}
-        <a href="{{ $pag.Last.URL }}" >{{ $totalPages }}</a>
-        {{ end }}
-    </div>
-    <div>
-        {{ if $pag.HasNext }}
-        <a href="{{ $pag.Next.URL }}" aria-label="Next page">==></a>
-        {{ else }}
-        <span aria-disabled="true">==></span>
-        {{ end }}
-    </div>
+  <div>
+    {{ if $pag.HasPrev }}
+    <a href="{{ $pag.Prev.URL }}" aria-label="Previous page"><==</a>
+    {{ else }}
+    <span aria-disabled="true"><==</span>
+    {{ end }}
+  </div>
+  <div>
+    {{ if gt $currentPage (add $adjacentPages 2) }}
+    <a href="{{ $pag.First.URL }}">1</a>
+    {{ end }}
+    {{ if gt $currentPage (add $adjacentPages 2) }}
+    <span>&hellip;</span>
+    {{ end }}
+    {{ $start := sub $currentPage $adjacentPages }}
+    {{ $end := add $currentPage $adjacentPages }}
+    {{ if lt $start 1 }}
+      {{ $start = 1 }}
+    {{ end }}
+    {{ if gt $end $totalPages }}
+      {{ $end = $totalPages }}
+    {{ end }}
+    {{ range seq $start $end }}
+      {{ if eq . $currentPage }}
+      <span aria-current="page">{{ . }}</span>
+      {{ else }}
+      <a href="{{ (index $pag.Pagers (sub . 1)).URL }}">{{ . }}</a>
+      {{ end }}
+    {{ end }}
+    {{ if lt $currentPage (sub $totalPages (add $adjacentPages 1)) }}
+    <span>&hellip;</span>
+    {{ end }}
+    {{ if lt $currentPage (sub $totalPages (add $adjacentPages 1)) }}
+    <a href="{{ $pag.Last.URL }}" >{{ $totalPages }}</a>
+    {{ end }}
+  </div>
+  <div>
+    {{ if $pag.HasNext }}
+    <a href="{{ $pag.Next.URL }}" aria-label="Next page">==></a>
+    {{ else }}
+    <span aria-disabled="true">==></span>
+    {{ end }}
+  </div>
 </nav>
 {{ end }}

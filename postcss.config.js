@@ -5,7 +5,6 @@ module.exports = {
       ignore: [
         'code'
       ]
-    },
-    'cssnano': {}
+    }
   }
 }

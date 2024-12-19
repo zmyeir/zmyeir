@@ -1,1 +1,28 @@
-<!-- Keep - override to add code to <header /> tag -->
+<div class="container">
+  <div class="terminal-nav">
+    <header class="terminal-logo">
+    <div class="logo terminal-prompt">
+      {{ $url := replace .Permalink ( printf "%s" .Site.BaseURL) "" }}
+      {{ $.Scratch.Add "path" .Site.BaseURL }}
+      <a href="{{ .Site.BaseURL }}" class="no-style">Guest@{{ .Site.Title }}</a><span> in /</span>
+      {{ range $index, $element := split $url "/" }}
+        {{ $.Scratch.Add "path" $element }}
+        {{ if ne $element "" }}
+          <a href='{{ $.Scratch.Get "path" | absURL }}'>{{ . }}</a>
+          {{ if ne $element "404.html" }}/{{ end }}
+          {{ $.Scratch.Add "path" "/" }}
+        {{ end }}
+      {{ end }}
+      <br><span>&gt; ls</span>
+    </div>
+  </header>
+    <nav class="terminal-menu">
+      <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+        {{ range .Site.Params.navlinks }}
+          <li><a href="{{ absURL .url }}" typeof="ListItem">{{ .name }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  </div>
+</div>
+

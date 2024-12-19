@@ -3,18 +3,18 @@
 <br/>
 {{ .Content }}
 <div>
-    <ul>
-        {{ $paginator := .Paginate (where .Site.RegularPages "Params.private" "!=" true) }}
-        {{ range $paginator.Pages }}
-        <li>
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            <div class="date">{{ .PublishDate.Format "2006-01-02" }}</div>
-        </li>
-        {{ end }}
-    </ul>
+  <ul>
+    {{ $paginator := .Paginate (where .Site.RegularPages "Params.private" "!=" true) }}
+    {{ range $paginator.Pages }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      <div class="date">{{ .PublishDate.Format "2006-01-02" }}</div>
+    </li>
+    {{ end }}
+  </ul>
 </div>
 <br/>
 <div class="pagination">
-{{ partial "pagination.html" . }}
+{{- partial "pagination.html" . -}}
 </div>
 {{ end }}

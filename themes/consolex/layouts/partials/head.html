@@ -1,0 +1,52 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+
+{{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+
+{{- partial "opengraph.html" . -}}
+
+<link rel="icon" href="{{ .Site.Params.favicon }}">
+
+<link rel="preload" as="script" href="https://unpkg.com/@swup/head-plugin@2">
+<link rel="preload" as="script" href="https://unpkg.com/@swup/preload-plugin@3">
+<link rel="preload" as="script" href="https://unpkg.com/swup@4">
+
+{{ if and (.Params.comments | default .Site.Params.enableComments) (eq hugo.Environment "production") }}
+  {{ if or (in .Site.Params.mainSections .Section) .Params.comments }}
+    {{ if .Site.Params.enableArtalk }}
+    {{ if .IsPage -}}
+      <link rel="preload" as="script" href="https://{{ .Site.Params.artalkServer }}/dist/ArtalkLite.js">
+    {{ end -}}
+      <link rel="stylesheet" href="https://{{ .Site.Params.artalkServer }}/dist/ArtalkLite.css">
+      <style>
+        #atk_comments > div.atk-list > div.atk-list-header > div.atk-comment-count.atk-dropdown-wrap > ul > li {
+          all: unset;
+        }
+        #atk_comments > div.atk-list > div.atk-list-header > div.atk-comment-count.atk-dropdown-wrap > ul > li::after {
+          content: "";
+        }
+        .artalk {
+          --at-color-main: #8d78eb;
+        }
+      </style>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $opts := dict "targetPath" "css/consolex.css" "outputStyle" "expanded" "enableSourceMap" (not hugo.IsProduction) }}
+  {{ with resources.Get "css/main.scss" | toCSS $opts | minify}}
+    {{ if hugo.IsProduction }}
+      {{ with . | postCSS | resources.PostProcess }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}">
+      {{ end }}
+    {{ else }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
+{{ end }}
+
+{{ with .OutputFormats.Get "RSS" }}
+  {{ printf `<link href="%s" rel="%s" type="%s" title="%s" />` .Permalink .Rel .MediaType.Type $.Site.Title | safeHTML }}
+{{ end }}
