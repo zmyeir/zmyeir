@@ -4,7 +4,6 @@ date = "2019-12-21T08:00:00+08:00"
 description = "Links on ZRLab"
 displayCopyright = false
 +++
-<link href="/res/links.css" rel="stylesheet">
 
 这里有一些可爱的小伙伴~
 
@@ -18,8 +17,24 @@ displayCopyright = false
 <ul id="inactive-links">稍等片刻，好友马上来！</ul>
 </div>
 
-
-<script src="/res/links.js"></script>
+<script>
+function shuffle(arr) {
+  return arr.sort(function () {
+    return Math.random() - 0.5;
+  });
+}
+fetch("/res/links.json")
+  .then((res) => res.json())
+  .then((data) => {
+    data.friends.forEach((dic) => {
+      var str = "";
+      shuffle(dic.link_list).forEach((friend) => {
+        str += `<li><a href="${friend.link}" target="_blank">${friend.name}</a></li>`;
+      });
+      document.querySelector(`.friends #${dic.id_name}`).innerHTML = str;
+    });
+  });
+</script>
 
 上次友联维护时间：2024-02-13
 
