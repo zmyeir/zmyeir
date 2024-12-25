@@ -35,6 +35,12 @@
           "avatar": "/imgs/avatar/dnslin.png"
         },
         {
+          "name": "CyanFalse's Weblog",
+          "intro": "I'm CyanFalse,New to Here.",
+          "link": "https://blog.eurekac.cn",
+          "avatar": "/imgs/avatar/cyfan.png"
+        },
+        {
           "name": "知命的博客",
           "intro": "敢点就敢短命",
           "link": "https://zimk.org/",
@@ -57,12 +63,6 @@
           "intro": "一条有着远大理想的咸鱼",
           "link": "https://wjy.me/",
           "avatar": "/imgs/avatar/wjy.png"
-        },
-        {
-          "name": "陈YF的博客",
-          "intro": "一个在互联网角落挣扎的小小博客",
-          "link": "https://blog.cyfan.top/",
-          "avatar": "/imgs/avatar/cyfan.png"
         },
         {
           "name": "KUKU",
