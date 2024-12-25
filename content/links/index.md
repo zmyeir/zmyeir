@@ -22,6 +22,8 @@ displayCopyright = false
 
 - [LamGC](https://blog.lamgc.moe/)
 
+- [CyanFalse's Weblog](https://blog.eurekac.cn)
+
   </ul>
 </div>
 
@@ -35,8 +37,6 @@ displayCopyright = false
 - [KUKU](https://kuku.me/)
 
 - [186526's Blog](https://blog.186526.xyz/)
-
-- [陈YF的博客](https://blog.cyfan.top/)
 
   </ul>
 </div>
