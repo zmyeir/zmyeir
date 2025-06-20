@@ -24,6 +24,8 @@ displayCopyright = false
 
 - [CyanFalse's Weblog](https://blog.eurekac.cn)
 
+- [YosakiSonako](https://blog.yosakisonako.top)
+
   </ul>
 </div>
 
