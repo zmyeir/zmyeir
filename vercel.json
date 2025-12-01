@@ -1,9 +1,19 @@
 {
-    "github": {
-        "silent": true
+  "github": {
+    "silent": true
+  },
+  "rewrites": [
+    {
+      "source": "/.well-known/matrix/server",
+      "destination": "/.well-known/matrix/server.json"
     },
-    "rewrites": [
-    { "source": "/.well-known/matrix/server", "destination": "/.well-known/matrix/server.json" },
-    { "source": "/.well-known/matrix/client", "destination": "/.well-known/matrix/client.json" }
-    ]
+    {
+      "source": "/.well-known/matrix/client",
+      "destination": "/.well-known/matrix/client.json"
+    },
+    {
+      "source": "/.well-known/:path*",
+      "destination": "https://wellknown.xxx.org/.well-known/:path*"
+    }
+  ]
 }
