@@ -11,12 +11,5 @@
       "source": "/.well-known/matrix/client",
       "destination": "/.well-known/matrix/client.json"
     }
-  ],
-  "redirects": [
-    {
-      "source": "/.well-known/:path*",
-      "destination": "https://mail.zrlab.org/.well-known/:path*",
-      "permanent": true
-    }
   ]
 }
