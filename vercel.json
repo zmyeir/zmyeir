@@ -15,7 +15,7 @@
   "redirects": [
     {
       "source": "/.well-known/:path*",
-      "destination": "https://wellknown.xxx.org/.well-known/:path*",
+      "destination": "https://mail.zrlab.org/.well-known/:path*",
       "permanent": true
     }
   ]
